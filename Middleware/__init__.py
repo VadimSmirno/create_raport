@@ -1,0 +1,1 @@
+from Middleware import checking_user_registration
