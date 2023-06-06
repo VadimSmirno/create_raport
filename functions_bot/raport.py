@@ -74,6 +74,10 @@ async def get_date_vacation(message: types.CallbackQuery, callback_data: simple_
     res = await state.get_data()
     res = res.get('vacation_part')
     if selected:
+        try:
+            await message.message.delete()
+        except MessageToDeleteNotFound as err:
+            logger.error(err)
         date_start_vacation = date.strftime("%d-%m-%Y")
         await state.update_data(date_start_vacation=date_start_vacation)
         date_object = datetime.strptime(date_start_vacation, '%d-%m-%Y')
@@ -93,6 +97,10 @@ async def get_date_vacation(message: types.CallbackQuery, callback_data: simple_
 async def get_date_finish_vacation(message: types.CallbackQuery, callback_data: simple_cal_callback, state: FSMContext):
     selected, date = await SimpleCalendar().process_selection(message, callback_data)
     if selected:
+        try:
+            await message.message.delete()
+        except MessageToDeleteNotFound as err:
+            logger.error(err)
         date_finish_vacation = date.strftime("%d-%m-%Y")
         logger.info(date_finish_vacation)
         await state.update_data(date_finish_vacation=date_finish_vacation)
@@ -165,6 +173,7 @@ async def get_material_aid(message:types.CallbackQuery, state:FSMContext):
         data = await state.get_data()
         logger.info(data)
         await message.message.answer('Готово, пишу рапорт')
+        # записать json в bd
 
 
 
