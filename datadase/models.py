@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase,sessionmaker
-from sqlalchemy import Column, Integer, String, BigInteger, Date
+from sqlalchemy import Column, Integer, String, BigInteger, Date, JSON
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.postgresql import JSONB
 from dotenv import load_dotenv
@@ -40,6 +40,7 @@ class User(Base):
     part_number = Column(Integer)
     service_start_date = Column(Date)  # начало службы
     telephone_number = Column(String)
+    raport_info_json = Column()
 
 
 

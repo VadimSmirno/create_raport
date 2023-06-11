@@ -85,6 +85,8 @@ async def edit_runk_job_part(message: types.CallbackQuery, state: FSMContext):
         await UserEditData.rank.set()
     elif result.endswith('_job'):
         job_title = result[:-4]
+        if job_title == 'Старший инструктор':
+            job_title = 'Старший инструктор во вождению пожарной машины - водитель'
         update_user_data_in_database(data=job_title,telegram_id=telegram_id, column_name='job')
         await state.finish()
         await message.message.answer(f'Должность обновлена на {job_title}')

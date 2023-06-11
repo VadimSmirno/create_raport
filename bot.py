@@ -34,9 +34,16 @@ class UserEditData(StatesGroup):
 
 class RaportInfo(StatesGroup):
     manager_name = State()
+    rank = State()
     vacation_part = State()
     date_start_vacation = State()
     date_finish_vacation = State()
     departure = State()
     city = State()
     material_aid = State()
+    itinerary_city = State()
+    kind_of_transport = State()
+    intermediate_city = State()
+    yes_or_no = State()
+    family = State()
+    family_member = State()

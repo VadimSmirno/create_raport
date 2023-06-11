@@ -59,3 +59,22 @@ def update_user_telephone_number(telegram_id, telephone_number):
             logger.error('Ошибка обновления', err)
         finally:
             session.close()
+
+def update_user_add_raport_info_json(telegram_id, data):
+    with Session() as session:
+        user = session.query(User).filter_by(telegram_id=telegram_id).first()
+        user.raport_info_json = data
+        try:
+            session.commit()
+            logger.info('Успешное обновление данных')
+        except SQLAlchemyError as err:
+            logger.error('Ошибка обновления', err)
+        finally:
+            session.close()
+
+
+def get_data_user(telegram_id):
+    with Session() as session:
+        user = session.query(User).filter_by(telegram_id=telegram_id).first()
+        session.close()
+        return user

@@ -1,8 +1,8 @@
 import asyncio
-from pprint import pprint
 from dadata import DadataAsync
 from bot import token_dadata
 from bot import secret
+from logging_dir.log import logger
 
 
 async def get_address(city:str) -> list:
@@ -10,18 +10,16 @@ async def get_address(city:str) -> list:
         response = await dadata.suggest('address', city, count=3)
         locality_information = [[value['value']] for value in response]
         return locality_information
-        # pprint(response)
-        # for i in response:
-        #     print(
-        #           i['data']['city_with_type'],
-        #           i['data']['region_with_type'],
-        #           i['data']['settlement_with_type'],
-        #           i['data']['area_with_type']
-        #     )
 
-#
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(get_address(''))
 
+async def get_itinerary(city: str)->list:
+    async with DadataAsync(token_dadata,secret) as dadata:
+        response = await dadata.suggest('address', city, count=1)
+        list_settlements = [
+            value['data']['settlement_with_type']
+             if value['data']['settlement_with_type'] != None
+             else value['data']['city_with_type']
+            for value in response]
+        return list_settlements
 
 
