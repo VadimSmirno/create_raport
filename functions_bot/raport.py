@@ -364,6 +364,7 @@ async def get_material_aid(message: types.CallbackQuery, state: FSMContext):
         with open(f'document_generation/ofont.ru_Denistina.ttf', 'rb') as file:
             await bot.send_document(message.message.chat.id, file, caption='Файл для установки шрифта')
 
+       
 
 def register_create_raport_command(dp: Dispatcher):
     dp.register_message_handler(create_raport_command, commands=['raport'])
