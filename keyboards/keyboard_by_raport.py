@@ -5,13 +5,14 @@ keyboard_managers_name= InlineKeyboardMarkup(row_width=3)
 name1 = InlineKeyboardButton('Балчугов В.В', callback_data='Балчугову В.В name')
 name2 = InlineKeyboardButton('Веретейников С.А', callback_data='Веретейникову С.А. name')
 add_name = InlineKeyboardButton('Добавить в ручную...', callback_data='name_add')
+close = InlineKeyboardButton('Закрыть', callback_data='закрыть')
 
 keyboard_managers_name.add(
     name1,
     name2,
     add_name
 )
-# keyboard_managers_name.row(add_name)
+keyboard_managers_name.row(close)
 
 keyboard_vacation_part = InlineKeyboardMarkup(row_width=3)
 

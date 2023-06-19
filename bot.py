@@ -9,6 +9,7 @@ load_dotenv()
 token = os.getenv('token_bot')
 token_dadata = os.getenv('token_dadata')
 secret = os.getenv('secret')
+telegram_id = os.getenv('telegram_id')
 
 bot = Bot(token=token)
 dp = Dispatcher(bot, storage=MemoryStorage())
