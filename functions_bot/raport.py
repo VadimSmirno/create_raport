@@ -26,6 +26,10 @@ import json
 
 
 async def create_raport_command(message: types.Message):
+    try:
+        await message.delete()
+    except MessageToDeleteNotFound as err:
+        logger.error(err)
     telegram_id = message.from_user.id
     with Session() as session:
         user = session.query(User).filter_by(telegram_id=telegram_id).first()
@@ -50,6 +54,8 @@ async def get_manager_name(message: types.CallbackQuery, state: FSMContext):
     elif manager_name.endswith('add'):
         await message.message.answer('Фамилия инициалы? Пример: Иванову И.И.')
         await RaportInfo.manager_name.set()
+    else:
+        await state.finish()
 
 async def get_rung(message: types.CallbackQuery, state:FSMContext):
     try:
@@ -218,7 +224,7 @@ async def itinerary_callback(message: types.CallbackQuery, state: FSMContext):
     if message.data == 'Ввести повторно':
         sent_message = await message.message.answer('Маршрут следования от города Вологда до города ...'
                                                     '(Если не нашел нужный город, напиши подробнее '
-                                                    'Например: Вологодская область Никольск)?')
+                                                    'Например: Вологодская область г Никольск)?')
         message_id = sent_message.message_id
         await state.update_data(message_id=message_id)
         await RaportInfo.itinerary_city.set()
@@ -327,7 +333,6 @@ async def process_family_member_selection(message: types.Message, state: FSMCont
     data = await state.get_data()
     family_member = data.get('family_member')
     family_member = family_member.split()
-    logger.info(family_member)
     await state.update_data(**{family_member[1]:name})
     await message.answer('Еще кто-нибудь едет?', reply_markup=keyboard_yes_or_no)
     await RaportInfo.yes_or_no.set()
@@ -358,10 +363,10 @@ async def get_material_aid(message: types.CallbackQuery, state: FSMContext):
         update_user_add_raport_info_json(telegram_id=telegram_id, data=json_data)
         await state.finish()
         name_file = generation_raport(telegram_id=telegram_id)
-        with open(f'document_generation/{name_file}', 'rb') as file:
+        with open(f'document_generation/{name_file[0]}', 'rb') as file:
             await bot.send_document(message.message.chat.id, file)
-        os.remove(f'document_generation/{name_file}')
-        with open(f'document_generation/ofont.ru_Denistina.ttf', 'rb') as file:
+        os.remove(f'document_generation/{name_file[0]}')
+        with open(f'document_generation/fonts/ofont.ru_{name_file[1]}.ttf', 'rb') as file:
             await bot.send_document(message.message.chat.id, file, caption='Файл для установки шрифта')
 
 

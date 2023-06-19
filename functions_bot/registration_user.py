@@ -106,7 +106,9 @@ async def get_job_title(message: types.CallbackQuery, state: FSMContext):
     else:
         job_title = message.data[:-4]
         if job_title == 'Старший инструктор':
-            await state.update_data(job_title = 'Старший инструктор по вождению пожарной мшины - водитель')
+            await state.update_data(job_title = 'Старший инструктор по вождению пожарной мишины - водитель')
+            await message.message.answer('Номер части', reply_markup=keyboard_part_number)
+            await UserData.part_number.set()
         else:
             await state.update_data(job_title=job_title)
             await message.message.answer('Номер части', reply_markup=keyboard_part_number)

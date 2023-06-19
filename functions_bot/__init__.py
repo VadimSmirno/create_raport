@@ -1,1 +1,1 @@
-from functions_bot import registration_user, start
+from functions_bot import registration_user, start, admin

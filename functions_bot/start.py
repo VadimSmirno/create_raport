@@ -4,8 +4,7 @@ from bot import bot, dp
 from datadase.models import Session, User
 from keyboards.keyboard import keyboard_registration
 from Middleware.throttling import rate_limit
-from Middleware.checking_user_registration import RegistrationMiddleware
-from aiogram.dispatcher import FSMContext
+
 
 start_message = 'Приветствую тебя, '
 
@@ -18,7 +17,7 @@ async def start_command(message:types.Message):
     with Session() as session:
         user = session.query(User).filter_by(telegram_id=telegram_id).first()
         if user is not None:
-            await bot.send_message(chat_id, 'Зарегистрирован')
+            await bot.send_message(chat_id, 'Написать рапорт. /raport')
         else:
             await  message.answer('Вам необходимо пройти регистрацию', reply_markup=keyboard_registration)
 

@@ -1,6 +1,6 @@
 from aiogram.utils.executor import start_webhook
 from bot import dp, bot
-from functions_bot import start,registration_user, edit_profile, raport
+from functions_bot import start,registration_user, edit_profile, raport, admin
 from datadase.models import Base, engine
 from Middleware.throttling import ThrottlingMiddleware
 from Middleware.checking_user_registration import RegistrationMiddleware
@@ -15,6 +15,7 @@ edit_profile.register_edit_callback_query(dp)
 raport.register_create_raport_command(dp)
 raport.register_create_raport_callback_query(dp)
 
+admin.register_count_user(dp)
 # webhook settings
 WEBHOOK_HOST = 'https://2502-178-64-245-56.ngrok-free.app'  # имя домена
 WEBHOOK_PATH = '/webhook'  # адрес, который будет обрабатывать запросы
