@@ -7,6 +7,8 @@ from datetime import datetime
 from logging_dir.log import logger
 from datadase.request_database import get_data_user
 from datadase.models import User
+import json
+import codecs
 
 
 def get_month_in_genitive(date_string):
@@ -74,11 +76,13 @@ def generation_raport(telegram_id):
     fonts = ["Denistina", "PF Scandal Pro Black", "Marianna", "Shlapak Script", 'Liana']
     random_font = random.choice(fonts)
     result: User = get_data_user(telegram_id)
-    date_start_vacation = result.raport_info_json['date_start_vacation']
+    decoded_str = codecs.decode(result.raport_info_json, 'unicode_escape')
+    data = json.loads(decoded_str)
+    date_start_vacation = data['date_start_vacation']
     date2 = datetime.strptime(date_start_vacation, "%d-%m-%Y")
     length_of_service = datetime.now().year - result.service_start_date.year
 
-    if result.raport_info_json['departure'] == 'Без выезда':
+    if data['departure'] == 'Без выезда':
         doc = docx.Document('document_generation/Рапорт 1ч без выезда без стажа.docx')
         style = doc.styles['Normal']
         font = style.font
@@ -98,14 +102,14 @@ def generation_raport(telegram_id):
             elif length_of_service >= 20 and 'dey' in paragraph.text:
                 paragraph.text = paragraph.text.replace('dey', '15')
 
-            if result.raport_info_json['vacation_part'] == '1':
-                date_finish_vacation = result.raport_info_json['date_finish_vacation']
+            if data['vacation_part'] == '1':
+                date_finish_vacation = data['date_finish_vacation']
                 date1 = datetime.strptime(date_finish_vacation, "%d-%m-%Y")
                 count = date1 - date2
                 count = str(count.days)
                 if '30 календарных дней' in paragraph.text:
                     paragraph.text = paragraph.text.replace('30', count)
-            elif result.raport_info_json['vacation_part'] == '2':
+            elif data['vacation_part'] == '2':
                 if 'первую часть' in paragraph.text:
                     paragraph.text = paragraph.text.replace('первую', 'вторую')
                 if  'продолжительность 30' in paragraph.text:
@@ -119,13 +123,13 @@ def generation_raport(telegram_id):
                 month = get_month_in_genitive(date_start_vacation)
                 paragraph.text = paragraph.text.replace('2023', str(date2.year))
                 paragraph.text = paragraph.text.replace('2 августа', f'{str(date2.day)} {month}')
-            if result.raport_info_json[
+            if data[
                 'manager_name'] != "Балчугову В.В" and paragraph.text == "Начальнику главного управления":
                 paragraph.text = paragraph.text.replace("Начальнику", 'ВрИО начальника')
-            if result.raport_info_json['manager_name'] != "Балчугову В.В" and 'генерал-майору' in paragraph.text:
-                paragraph.text = paragraph.text.replace('генерал-майору', result.raport_info_json['rung'])
-            if result.raport_info_json['manager_name'] != "Балчугову В.В" and 'Балчугову В.В.' in paragraph.text:
-                paragraph.text = paragraph.text.replace('Балчугову В.В.', result.raport_info_json['manager_name'])
+            if data['manager_name'] != "Балчугову В.В" and 'генерал-майору' in paragraph.text:
+                paragraph.text = paragraph.text.replace('генерал-майору', data['rung'])
+            if data['manager_name'] != "Балчугову В.В" and 'Балчугову В.В.' in paragraph.text:
+                paragraph.text = paragraph.text.replace('Балчугову В.В.', data['manager_name'])
             if '20.05.2023г' in paragraph.text:
                 paragraph.text = paragraph.text.replace('20.05.2023', datetime.now().strftime("%d.%m.%Y"))
 
@@ -139,11 +143,11 @@ def generation_raport(telegram_id):
             if '3 пожарно' in paragraph.text:
                 paragraph.text = paragraph.text.replace('3', str(result.part_number))
 
-            if result.raport_info_json['material_aid'] == 'нет' and 'Прошу выплатить мне' in paragraph.text:
+            if data['material_aid'] == 'нет' and 'Прошу выплатить мне' in paragraph.text:
                 p = paragraph._element
                 p.getparent().remove(p)
         doc.save(f'document_generation/{result.last_name} {result.first_name[0]}.{result.surname[0]}.docx')
-    elif result.raport_info_json['departure'] == 'С выездом':
+    elif data['departure'] == 'С выездом':
         doc = docx.Document('document_generation/Рапорт 1ч с выездом без стажа.docx')
         style = doc.styles['Normal']
         font = style.font
@@ -161,15 +165,15 @@ def generation_raport(telegram_id):
                 paragraph.text = paragraph.text.replace('dey', '10')
             elif length_of_service >= 20 and 'dey' in paragraph.text:
                 paragraph.text = paragraph.text.replace('dey', '15')
-            if result.raport_info_json['vacation_part'] == '1':
-                date_finish_vacation = result.raport_info_json['date_finish_vacation']
+            if data['vacation_part'] == '1':
+                date_finish_vacation = data['date_finish_vacation']
                 date1 = datetime.strptime(date_finish_vacation, "%d-%m-%Y")
                 count = date1 - date2
                 count = str(count.days)
                 if '30 календарных дней' in paragraph.text:
                     paragraph.text = paragraph.text.replace('30', count)
 
-            elif result.raport_info_json['vacation_part'] == '2':
+            elif data['vacation_part'] == '2':
                 if 'первую часть' in paragraph.text:
                     paragraph.text = paragraph.text.replace('первую', 'вторую')
                 if  'продолжительность 30' in paragraph.text:
@@ -183,13 +187,13 @@ def generation_raport(telegram_id):
                 month = get_month_in_genitive(date_start_vacation)
                 paragraph.text = paragraph.text.replace('2023', str(date2.year))
                 paragraph.text = paragraph.text.replace('2 августа', f'{str(date2.day)} {month}')
-            if result.raport_info_json[
+            if data[
                 'manager_name'] != "Балчугову В.В" and paragraph.text == "Начальнику главного управления":
                 paragraph.text = paragraph.text.replace("Начальнику", 'ВрИО начальника')
-            if result.raport_info_json['manager_name'] != "Балчугову В.В" and 'генерал-майору' in paragraph.text:
-                paragraph.text = paragraph.text.replace('генерал-майору', result.raport_info_json['rung'])
-            if result.raport_info_json['manager_name'] != "Балчугову В.В" and 'Балчугову В.В.' in paragraph.text:
-                paragraph.text = paragraph.text.replace('Балчугову В.В.', result.raport_info_json['manager_name'])
+            if data['manager_name'] != "Балчугову В.В" and 'генерал-майору' in paragraph.text:
+                paragraph.text = paragraph.text.replace('генерал-майору', data['rung'])
+            if data['manager_name'] != "Балчугову В.В" and 'Балчугову В.В.' in paragraph.text:
+                paragraph.text = paragraph.text.replace('Балчугову В.В.', data['manager_name'])
             if '8900 536 71 36' in paragraph.text:
                 paragraph.text = paragraph.text.replace('8900 536 71 36', result.telephone_number)
             if '20.05.2023г' in paragraph.text:
@@ -202,11 +206,11 @@ def generation_raport(telegram_id):
                 paragraph.text = paragraph.text.replace('Иванов Иван Иванович',
                                                         f'{result.last_name} {result.first_name} {result.surname}')
             if 'буду проводить в городе Сочи' in paragraph.text:
-                list_city = result.raport_info_json['list_city']
+                list_city = data['list_city']
                 list_city = list_city.split(', ')
                 paragraph.text = paragraph.text.replace('городе Сочи', f'{list_city[1]} {list_city[0]}')
             if 'железнодорожным транспортом' in paragraph.text:
-                itinerary = result.raport_info_json.get('itinerary')
+                itinerary = data.get('itinerary')
                 if len(itinerary) == 1:
                     itinerary = format_itinerary(itinerary)
                     paragraph.text = paragraph.text.replace('железнодорожным транспортом', itinerary)
@@ -214,14 +218,14 @@ def generation_raport(telegram_id):
                     itinerary = format_itinerary2(itinerary)
                     paragraph.text = paragraph.text.replace('железнодорожным транспортом', itinerary)
             if 'отпуска следуют:' in paragraph.text:
-                family = result.raport_info_json
+                family = data
                 family_str = format_vacation_followers(family)
                 if family_str.endswith('отпуска следуют:'):
                     p = paragraph._element
                     p.getparent().remove(p)
                 else:
                     paragraph.text = paragraph.text.replace('отпуска следуют:', family_str)
-            if result.raport_info_json['material_aid'] == 'нет' and 'Прошу выплатить мне' in paragraph.text:
+            if data['material_aid'] == 'нет' and 'Прошу выплатить мне' in paragraph.text:
                 p = paragraph._element
                 p.getparent().remove(p)
 

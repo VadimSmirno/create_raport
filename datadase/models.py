@@ -40,7 +40,7 @@ class User(Base):
     part_number = Column(Integer)
     service_start_date = Column(Date)  # начало службы
     telephone_number = Column(String)
-    raport_info_json = Column()
+    raport_info_json = Column(JSON)
 
 
 
