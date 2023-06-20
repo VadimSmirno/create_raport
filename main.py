@@ -17,7 +17,7 @@ raport.register_create_raport_callback_query(dp)
 
 admin.register_count_user(dp)
 # webhook settings
-WEBHOOK_HOST = 'https://2502-178-64-245-56.ngrok-free.app'  # имя домена
+WEBHOOK_HOST = 'https://4e43-178-64-245-56.ngrok-free.app'  # имя домена
 WEBHOOK_PATH = '/webhook'  # адрес, который будет обрабатывать запросы
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
