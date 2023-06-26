@@ -1,6 +1,7 @@
 from sqlalchemy.exc import SQLAlchemyError
 from logging_dir.log import logger
 from datadase.models import Session, User
+from datetime import datetime
 
 
 def writing_information_to_the_database(telegram_id, data: dict):
@@ -15,7 +16,7 @@ def writing_information_to_the_database(telegram_id, data: dict):
             part_number=data.get('part_number'),
             surname=data.get('surname'),
             telephone_number=data.get('telephone_number'),
-            service_start_date = data.get('service_start_date')
+            service_start_date=datetime.strptime(data.get('service_start_date'), '%d-%m-%Y').date()
         )
         session.add(new_user)
         try:

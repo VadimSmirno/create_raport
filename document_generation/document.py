@@ -1,4 +1,4 @@
-import locale
+
 import random
 import docx
 from docx.shared import RGBColor
@@ -12,27 +12,26 @@ import codecs
 
 
 def get_month_in_genitive(date_string):
-    locale.setlocale(locale.LC_TIME, 'ru')
     current_date = datetime.strptime(date_string, "%d-%m-%Y")
 
     month_cases = {
-        "январь": "января",
-        "февраль": "февраля",
-        "март": "марта",
-        "апрель": "апреля",
-        "май": "мая",
-        "июнь": "июня",
-        "июль": "июля",
-        "август": "августа",
-        "сентябрь": "сентября",
-        "октябрь": "октября",
-        "ноябрь": "ноября",
-        "декабрь": "декабря"
+    "january": "января",
+    "february": "февраля",
+    "march": "марта",
+    "april": "апреля",
+    "may": "мая",
+    "june": "июня",
+    "july": "июля",
+    "august": "августа",
+    "september": "сентября",
+    "october": "октября",
+    "november": "ноября",
+    "december": "декабря"
     }
 
     month_name = current_date.strftime("%B").lower()
     month_in_genitive = month_cases.get(month_name, "")
-
+    
     return month_in_genitive
 
 
@@ -142,7 +141,8 @@ def generation_raport(telegram_id):
                 paragraph.text = paragraph.text.replace('Старший-инструктор по вождению ', result.job_title)
             if '3 пожарно' in paragraph.text:
                 paragraph.text = paragraph.text.replace('3', str(result.part_number))
-
+            if 'старшина' in paragraph.text:
+                paragraph.text = paragraph.text.replace('старшина', result.rank)
             if data['material_aid'] == 'нет' and 'Прошу выплатить мне' in paragraph.text:
                 p = paragraph._element
                 p.getparent().remove(p)
@@ -202,6 +202,8 @@ def generation_raport(telegram_id):
                 paragraph.text = paragraph.text.replace('3', str(result.part_number))
             if 'Старший-инструктор ' in paragraph.text:
                 paragraph.text = paragraph.text.replace('Старший-инструктор по вождению ', result.job_title)
+            if 'старшина' in paragraph.text:
+                paragraph.text = paragraph.text.replace('старшина', result.rank)
             if 'Иванов Иван Иванович' in paragraph.text:
                 paragraph.text = paragraph.text.replace('Иванов Иван Иванович',
                                                         f'{result.last_name} {result.first_name} {result.surname}')

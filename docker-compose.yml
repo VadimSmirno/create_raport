@@ -3,23 +3,24 @@ version: "3.8"
 services:
   bot:
     build: .
-    command:
-      - python main.py
+    command: sh -c "env && python3 main.py"
     env_file:
       - .env
+    restart: always
     depends_on:
       - db
+    ports:
+      - "80:80"
 
 
   db:
     image: postgres:12-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: db_name
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data-new:/var/lib/postgresql/data-new
+      - ./postgres_conf:/docker-entrypoint-initdb.d
     restart: always
+    env_file:
+      - .env
 
 volumes:
-  postgres_data:
+  postgres_data-new:

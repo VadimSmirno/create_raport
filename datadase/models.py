@@ -10,10 +10,11 @@ import os
 metadata = MetaData()
 
 load_dotenv()
-name_db = os.getenv('db_name')
-username = os.getenv('user')
-password = os.getenv('password')
-host = os.getenv('host')
+name_db = os.getenv('POSTGRES_DB')
+username = os.getenv('POSTGRES_USER')
+password = os.getenv('POSTGRES_PASSWORD')
+host = os.getenv('DB_HOST')
+port = os.getenv('DB_PORT')
 
 url_object = URL.create(
     "postgresql+psycopg2",
@@ -21,6 +22,7 @@ url_object = URL.create(
     password=password,
     host=host,
     database=name_db,
+    port=port
 )
 
 engine = create_engine(url_object)
