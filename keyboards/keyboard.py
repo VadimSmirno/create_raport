@@ -19,12 +19,12 @@ keyboard_status_rang.add(
 keyboard_status_rang.row(back_button)
 
 keyboard_rang = InlineKeyboardMarkup(row_width=2)
-private_button = InlineKeyboardButton('Рядовой', callback_data='Рядовой rang')
-junior_sergeant_button = InlineKeyboardButton('Младший сержант', callback_data='Младший сержант rang')
-sergeant_button = InlineKeyboardButton('Сержант', callback_data='Сержант rang')
-senior_sergeant_button = InlineKeyboardButton('Старший сержант', callback_data='Старший сержант rang')
-foreman_button = InlineKeyboardButton('Старшина', callback_data='Старшина rang')
-warrant_officer_button = InlineKeyboardButton('Прапоршик', callback_data='Прапорщик rang')
+private_button = InlineKeyboardButton('Рядовой', callback_data='рядовой rang')
+junior_sergeant_button = InlineKeyboardButton('Младший сержант', callback_data='младший сержант rang')
+sergeant_button = InlineKeyboardButton('Сержант', callback_data='сержант rang')
+senior_sergeant_button = InlineKeyboardButton('Старший сержант', callback_data='старший сержант rang')
+foreman_button = InlineKeyboardButton('Старшина', callback_data='старшина rang')
+warrant_officer_button = InlineKeyboardButton('Прапоршик', callback_data='прапорщик rang')
 senior_warrant_officer = InlineKeyboardButton('Старший прапоршик', callback_data='Старший прапорщик rang')
 back_button_rang = InlineKeyboardButton('Назад', callback_data='Назад rang')
 back_button_rang.text = '⬅️ Назад. '
@@ -40,12 +40,12 @@ keyboard_rang.add(
 keyboard_rang.row(back_button_rang)
 
 keyboard_rag_officer = InlineKeyboardMarkup(row_width=2)
-lieutenant_button = InlineKeyboardButton('Лейтенант', callback_data='Лейтенант rang')
-senior_lieutenant_button = InlineKeyboardButton('Старший лейтенант', callback_data='Старший лейтенант rang')
-captain_button = InlineKeyboardButton('Капитан', callback_data='Капитан rang')
-major_button = InlineKeyboardButton('Майор', callback_data='Майор rang')
-lieutenant_colonel_button = InlineKeyboardButton('Подполковник', callback_data='Подполковник rang')
-colonel_button = InlineKeyboardButton('Полковник', callback_data='Полковник rang')
+lieutenant_button = InlineKeyboardButton('Лейтенант', callback_data='лейтенант rang')
+senior_lieutenant_button = InlineKeyboardButton('Старший лейтенант', callback_data='старший лейтенант rang')
+captain_button = InlineKeyboardButton('Капитан', callback_data='капитан rang')
+major_button = InlineKeyboardButton('Майор', callback_data='майор rang')
+lieutenant_colonel_button = InlineKeyboardButton('Подполковник', callback_data='подполковник rang')
+colonel_button = InlineKeyboardButton('Полковник', callback_data='полковник rang')
 keyboard_rag_officer.add(
     lieutenant_button,
     senior_lieutenant_button,
@@ -57,16 +57,15 @@ keyboard_rag_officer.add(
 keyboard_rag_officer.row(back_button_rang)
 
 keyboard_job_title = InlineKeyboardMarkup(row_width=2)
-firefighter_button = InlineKeyboardButton('Пожарный', callback_data='Пожарный_job')
-senior_firefighter_button = InlineKeyboardButton('Старший пожарный', callback_data='Старший пожарный_job')
-squad_commander_button = InlineKeyboardButton('Командир отделения', callback_data='Командир отделения_job')
-assistant_watch_commander_button = InlineKeyboardButton('Помощник начальника караула', callback_data='Помощник начальника караула_job')
-watch_commander_button = InlineKeyboardButton('Начальник караула', callback_data='Начальник караула_job')
-unit_chief = InlineKeyboardButton('Начальник части', callback_data='Начальник части_job')
-deputy_head_chief = InlineKeyboardButton('Зам. начальника части', callback_data='Заместитель начальника части_job')
+firefighter_button = InlineKeyboardButton('Пожарный', callback_data='пожарный_job')
+senior_firefighter_button = InlineKeyboardButton('Старший пожарный', callback_data='старший пожарный_job')
+squad_commander_button = InlineKeyboardButton('Командир отделения', callback_data='командир отделения_job')
+assistant_watch_commander_button = InlineKeyboardButton('Помощник начальника караула', callback_data='помощник начальника караула_job')
+watch_commander_button = InlineKeyboardButton('Начальник караула', callback_data='начальник караула_job')
+unit_chief = InlineKeyboardButton('Начальник части', callback_data='начальник части_job')
+deputy_head_chief = InlineKeyboardButton('Зам. начальника части', callback_data='заместитель начальника части_job')
 senior_instructor_button = InlineKeyboardButton('Старший инструктор', callback_data='Старший инструктор_job')
 back_button_job = InlineKeyboardButton('⬅️ Назад', callback_data='Назад job')
-
 
 keyboard_job_title.add(
     firefighter_button,
