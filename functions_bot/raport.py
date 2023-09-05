@@ -86,8 +86,10 @@ async def get_vacation_part(message: types.CallbackQuery, state: FSMContext):
         await message.message.answer('На чье имя?', reply_markup=keyboard_managers_name)
         await RaportInfo.manager_name.set()
     elif vacation_part.endswith('part'):
+        month = datetime.now().month
+        year = datetime.now().year
         await state.update_data(vacation_part=vacation_part[:1])
-        await message.message.answer('Дата начала отпуска?', reply_markup=await SimpleCalendar().start_calendar())
+        await message.message.answer('Дата начала отпуска?', reply_markup=await SimpleCalendar().start_calendar(year=year, month=month))
         await RaportInfo.date_start_vacation.set()
 
 
@@ -95,6 +97,7 @@ async def get_date_vacation(message: types.CallbackQuery, callback_data: simple_
     selected, date = await SimpleCalendar().process_selection(message, callback_data)
     res = await state.get_data()
     res = res.get('vacation_part')
+    year = datetime.now().year
     if selected:
         try:
             await message.message.delete()
@@ -106,7 +109,7 @@ async def get_date_vacation(message: types.CallbackQuery, callback_data: simple_
         month_number = date_object.month
         if res == '1':
             await message.message.answer('Дата окончания отпуска?',
-                                         reply_markup=await SimpleCalendar().start_calendar(month=month_number))
+                                         reply_markup=await SimpleCalendar().start_calendar(year=year, month=month_number))
             await RaportInfo.date_finish_vacation.set()
         else:
             date_finish = await state.get_data()
